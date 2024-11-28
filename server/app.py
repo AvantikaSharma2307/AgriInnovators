@@ -1,7 +1,10 @@
 from flask import Flask, request, jsonify
+from werkzeug.utils import secure_filename
 import os
+from PIL import Image
 import pickle
 import numpy as np
+import tensorflow as tf
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -14,8 +17,8 @@ def get_data():
     }
     return jsonify(data)
 
-# Load the crop recommendation model during app initialization
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Directory of the current script
+# Load the crop recommendation model 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))  
 MODEL_PATH = r'C:/Users/avant/Downloads/Innotech/AgriInnovators/server/crop_rec.pkl'
 
 try:
@@ -95,6 +98,90 @@ def predict_crop():
 
     except Exception as e:
         return jsonify({'error': f"Error during prediction: {str(e)}"}), 500
+    
+
+UPLOAD_FOLDER = r'C:/Users/avant/Downloads/Innotech/AgriInnovators/server/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Allowed file extensions for image
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Function to check allowed file extension
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Load models (replace these with your actual model loading code)
+def load_model(model_name):
+    if model_name == 'tomato':
+        with open(r'C:/Users/avant/Downloads/Innotech/AgriInnovators/server/tomato.pkl', 'rb') as file:
+            model = pickle.load(file)
+        return model
+    elif model_name == 'corn':
+        with open(r'C:/Users/avant/Downloads/Innotech/AgriInnovators/server/corn_dis.pkl', 'rb') as file:
+            model = pickle.load(file)
+        return model
+    else:
+        raise ValueError(f"Model for '{model_name}' not found")
+
+# Route for handling image upload and prediction
+@app.route('/api/disease-prediction', methods=['POST'])
+def predict_disease():
+    if 'file' not in request.files or 'text' not in request.form:
+        return jsonify({'error': 'No file or text input provided'}), 400
+
+    file = request.files['file']
+    model_name = request.form['text'].lower()  # Text value to determine which model to load
+    
+    # Check if the file is valid
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+
+        # Open the image and preprocess it as required by the model
+        img = Image.open(file_path)
+        img = img.resize((120, 120))  # Resize to 120x120 as required by your model
+        img_array = np.array(img) / 255.0  # Normalize if needed
+
+        # Ensure the image has 3 channels (RGB)
+        if img_array.ndim == 2:  # Grayscale image, add channels
+            img_array = np.stack([img_array] * 3, axis=-1)
+        
+        # Add batch dimension (expand dims to make it compatible with the model input)
+        img_array = np.expand_dims(img_array, axis=0)
+
+        # Load the appropriate model based on the text input
+        model = load_model(model_name)
+
+        # Get the prediction from the model
+        prediction = model.predict(img_array)
+        print(f"Prediction array: {prediction}")
+
+        # For multi-class classification (e.g., 3 classes)
+        if prediction.ndim == 2:  # Shape (1, num_classes)
+            predicted_class = np.argmax(prediction, axis=-1)
+            print(f"Predicted class index: {predicted_class}")
+
+            # Map to disease names (ensure this list matches the number of classes in your model)
+            disease_names = ['Healthy', 'Diseased', 'Unknown']
+            if predicted_class[0] < len(disease_names):
+                predicted_disease = disease_names[predicted_class[0]]
+            else:
+                predicted_disease = "Unknown Disease"
+        
+        # For binary classification (e.g., 0 = Healthy, 1 = Diseased)
+        elif prediction.ndim == 1 and prediction.shape[1] == 1:  # Shape (1,)
+            predicted_disease = 'Diseased' if prediction[0] > 0.5 else 'Healthy'
+
+        print(f"Predicted disease: {predicted_disease}")
+
+        return jsonify({'prediction': predicted_disease}), 200
+
+    return jsonify({'error': 'Invalid file format'}), 400
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
