@@ -5,10 +5,11 @@ import { Hero } from '../components/Hero'
 import { HowItWorks } from '../components/HowItWorks'
 import { FAQ } from '../components/FAQ'
 
+
 export default function Home() {
   return (
    <>
-   <div className="h-screen grid grid-cols-1 md:grid-cols-2 pt-16" style={{ backgroundColor: "#55a630" }}>
+   <div className="h-screen grid grid-cols-1 md:grid-cols-2 pt-16" style={{ backgroundColor: "#4DA131" }}>
   <div className="ml-12 md:ml-56 mt-24 px-4 text-center md:text-left">
     <h1 className="font-bold text-6xl md:text-8xl text-white leading-tight tracking-wide font-extrabold text-shadow-md">
       Smart Farm
@@ -20,9 +21,10 @@ export default function Home() {
       Bringing Trust to Every Seed, Empowering Farmers for a Sustainable Future.
     </p>
     <div className="mt-12">
+      <a href='#Smartfarming'>
       <button className="px-8 py-4 bg-yellow-500 text-white text-2xl font-semibold rounded-lg shadow-lg transform transition duration-300 hover:bg-yellow-600 hover:scale-105">
         Learn More
-      </button>
+      </button></a>
     </div>
   </div>
   

@@ -3,14 +3,14 @@ import {Brain, Microscope,Sprout} from 'lucide-react';
 
 export function Hero() {
   return (
-    <div className="relative bg-green-50">
+    <div className="relative bg-green-50" id="Smartfarming">
       <div className="container mx-auto px-6 py-24">
         <div className="text-center">
           <h1 className="text-5xl font-bold text-green-800 mb-6">
             Smart Farming Solutions
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Revolutionize your farming with AI-powered recommendations, crop health monitoring,
+            Revolutionize your farming with IOT Sensors,AI-powered recommendations, crop health monitoring,
             and precision agriculture techniques.
           </p>
           <button className="bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors">

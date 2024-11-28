@@ -7,7 +7,7 @@ export function FAQ() {
   const faqs = [
     {
       question: "How accurate is the crop disease detection?",
-      answer: "Our AI-powered disease detection system has a 95% accuracy rate, trained on millions of plant images and continuously updated with new data."
+      answer: "Our AI-powered disease detection system has a 96% accuracy rate, trained on millions of plant images and continuously updated with new data."
     },
     {
       question: "What type of soil analysis do you provide?",
