@@ -10,7 +10,8 @@ const navigation = [
 
 const services = [
   { name: 'Crop Recommendation', href: '/predict_crop' },
-  { name: 'Disease Prediction', href: '/disease-predict' },
+  { name: 'Disease Prediction', href: '/api/disease-prediction' },
+  { name: 'Fertilizer Prediction', href: '/api/fertilizer-prediction' },
 ];
 const premium=[
   { name:"Government Policies",href:'/gov-policies'},
@@ -64,7 +65,7 @@ export default function Navbar() {
                       item.current
                         ? "bg-gray-900 text-white"
                         : "text-white text-lg hover:bg-gray-900 hover:text-white",
-                      "rounded-md px-3 py-2 flex items-center text-sm font-medium transition-all duration-300"
+                      "rounded-md px-3 py-2 flex items-center text-lg font-medium transition-all duration-300"
                     )}
                   >
                     {item.name}

@@ -17,7 +17,7 @@ function App() {
     <Routes> 
       <Route path='/' element={<Home/>}/>
       <Route path="/predict_crop" element={<CropRecommendation/>}/>
-      <Route path="/disease-predict" element={<DiseasePredictionPage/>}/>
+      <Route path="/api/disease-prediction" element={<DiseasePredictionPage/>}/>
      </Routes>
      <Footer/>
      </Router>
