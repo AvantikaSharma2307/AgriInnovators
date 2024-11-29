@@ -11,7 +11,8 @@ const navigation = [
 const services = [
   { name: 'Crop Recommendation', href: '/predict_crop' },
   { name: 'Disease Prediction', href: '/api/disease-prediction' },
-  { name: 'Fertilizer Prediction', href: '/api/fertilizer-prediction' },
+  { name: 'Fertilizer Prediction', href: '/api/predict-fertilizer' },
+  {name: 'Weather Prediction',href:'/predict-weather'},
 ];
 const premium=[
   { name:"Government Policies",href:'/gov-policies'},
@@ -103,6 +104,43 @@ export default function Navbar() {
                             className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
                           >
                             {service.name}
+                          </a>
+                        ))}
+                      </DisclosurePanel>
+                    </>
+                  )}
+                </Disclosure>
+                {/* Premium */}
+                <Disclosure>
+                  {({ open }) => (
+                    <>
+                      <DisclosureButton className="text-white text-lg flex items-center space-x-2 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
+                        <span>Premium</span>
+                        <svg
+                          className={`h-4 w-4 transform transition-transform ${
+                            open ? "rotate-180" : "rotate-0"
+                          }`}
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-32 space-y-1 bg-white rounded-md p-3">
+                        {premium.map((premium) => (
+                          <a
+                            key={premium.name}
+                            href={premium.href}
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+                          >
+                            {premium.name}
                           </a>
                         ))}
                       </DisclosurePanel>

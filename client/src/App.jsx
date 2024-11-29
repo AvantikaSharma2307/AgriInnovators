@@ -5,6 +5,10 @@ import { BrowserRouter as Router,Routes,Route } from 'react-router-dom'
 import CropRecommendation from './Pages/CropRecomendation/CropRecomendation'
 import DiseasePredictionPage from './Pages/Disease/Disease'
 import Footer from './components/Footer'
+import FertilizerPrediction from './Pages/FertilizerPrediction/Fertilizerpredict'
+import WeatherPrediction from './Pages/WeatherPredict/WeatherPrediction'
+
+
 
 function App() {
   // useEffect(()=>{
@@ -18,6 +22,11 @@ function App() {
       <Route path='/' element={<Home/>}/>
       <Route path="/predict_crop" element={<CropRecommendation/>}/>
       <Route path="/api/disease-prediction" element={<DiseasePredictionPage/>}/>
+      <Route path="/api/predict-fertilizer" element={<FertilizerPrediction/>}/>
+      <Route path="/predict-weather" element={<WeatherPrediction/>}/>
+      
+    
+     
      </Routes>
      <Footer/>
      </Router>
